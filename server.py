@@ -9,7 +9,7 @@ MAX_UPLOAD_SIZE = 100 * 1024 * 1024  # 100 MB
 
 app = FastAPI()
 
-print("Loading Docling models... (first time is slow)")
+print("Loading Docling models...... (first time is slow)")
 pipeline_options = PdfPipelineOptions()
 pipeline_options.do_table_structure = True
 pipeline_options.document_timeout = 90
