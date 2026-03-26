@@ -34,5 +34,5 @@ jobs:
                   tags: |
                       macroni/docling-server:latest
                       macroni/docling-server:${{ github.sha }}
-                  cache-from: type=registry,ref=macroni/docling-server:buildcache
-                  cache-to: type=registry,ref=macroni/docling-server:buildcache,mode=max
+                  cache-from: type=gha
+                  cache-to: type=gha,mode=max
