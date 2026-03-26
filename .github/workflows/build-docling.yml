@@ -1,0 +1,38 @@
+name: Build & Push Docling Server
+
+on:
+    push:
+        branches: [main]
+        paths: # only rebuild if these files change
+            - "Dockerfile"
+            - "server.py"
+    workflow_dispatch: # allows manual trigger from GitHub UI
+
+jobs:
+    build-and-push:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Set up Docker Buildx
+              uses: docker/setup-buildx-action@v3
+
+            - name: Login to Docker Hub
+              uses: docker/login-action@v3
+              with:
+                  username: macroni
+                  password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+            - name: Build and push
+              uses: docker/build-push-action@v6
+              with:
+                  context: .
+                  push: true
+                  platforms: linux/amd64 # RunPod is always amd64
+                  tags: |
+                      macroni/docling-server:latest
+                      macroni/docling-server:${{ github.sha }}
+                  cache-from: type=registry,ref=macroni/docling-server:buildcache
+                  cache-to: type=registry,ref=macroni/docling-server:buildcache,mode=max
